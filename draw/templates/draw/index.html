@@ -16,20 +16,75 @@
 </head>
 <body>
     <!-- You may change the dimensions of this canvas -->
-    <canvas id="myCanvas" width="750px" height="750px"></canvas>
+    <canvas id="myCanvas" width="1366px" height="1024px"></canvas>
 </body>
-<script>
+<script type="text/javascript">
 
     // setting up the canvas and one paper tool
-    var canvas = document.getElementById('myCanvas');
-    paper.setup(canvas);
-    var tool = new paper.Tool();
+    window.onload = function() {
+      var canvas = document.getElementById('myCanvas');
+      paper.setup(canvas);
+      var tool = new paper.Tool();
+      var path;
 
+      // Only execute onMouseDrag when the mouse
+      // has moved at least 10 points:
+      tool.minDistance = 10;
+
+      tool.onMouseDown = function(event) {
+          // Create a new path every time the mouse is clicked
+          path = new paper.Path();
+          path.add(event.point);
+          path.strokeColor = 'black';
+      }
+
+      tool.onMouseDrag = function(event) {
+          // Add a point to the path every time the mouse is dragged
+          path.add(event.point);
+      }
+      tool.onMouseUp = function(event) {
+          path.add(event.point);
+          var path_list = [];
+          var i;
+          for (i = 0; i < path.segments.length; i++) {
+            path_list.push(path.segments[i].point.x);
+            path_list.push(path.segments[i].point.y);
+          }
+          socket.send(path_list);
+
+      }
+    }
+    
     // getting the URL (you may want to use for Exercise 3)
     var url = window.location.href;
 
-    // var socket = new WebSocket(
-    //     'wss://<your url here>/ws/draw');
+    var socket = new WebSocket(
+         'wss://p3-websockets-gzhou2142-garyzhou347810.codeanyapp.com/ws/draw');
+  
+    socket.onmessage = function(receivedMessage) {
+      var pathList = receivedMessage.data.split(",");
+      var p = new paper.Path();
+      p.strokeColor = 'black';
+      var i;
+      for (i = 0; i < pathList.length-1; i+=2) {
+        var x = parseInt(pathList[i], 10);
+        var y = parseInt(pathList[i+1], 10);
+        var point = new paper.Point(x,y);
+        p.add(point);
+      }
+//       var myPath = new paper.Path();
+//       myPath.strokeColor = 'black';
+//       var i;
+//       for (i = 0; i < receivedMessage.length ; i++) {
+//         myPath.add(segments[i].point);
+//         console.log(segments[i].point);
+//       }
+      
+    }
+
+    socket.onclose = function(e) {
+      console.error('Chat socket closed unexpectedly');
+    }
 
 
 </script>

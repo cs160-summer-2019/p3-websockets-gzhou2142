@@ -15,13 +15,21 @@
 
 </head>
 <body>
+<!--     <div id = "log">
+      <h1>
+        
+       hi
+      </h1>
+  </div> -->
     <!-- You may change the dimensions of this canvas -->
-    <canvas id="myCanvas" width="1366px" height="1024px"></canvas>
+   <canvas id="myCanvas" width="1366px" height="1024px"></canvas>
 </body>
 <script type="text/javascript">
-
+    
     // setting up the canvas and one paper tool
     window.onload = function() {
+      var ID = Math.floor(Math.random() * 10000000000);
+      var color = getRandomColor();
       var canvas = document.getElementById('myCanvas');
       paper.setup(canvas);
       var tool = new paper.Tool();
@@ -35,7 +43,8 @@
           // Create a new path every time the mouse is clicked
           path = new paper.Path();
           path.add(event.point);
-          path.strokeColor = 'black';
+          path.strokeColor = color;
+          path.strokeWidth = 5;
       }
 
       tool.onMouseDrag = function(event) {
@@ -50,10 +59,42 @@
             path_list.push(path.segments[i].point.x);
             path_list.push(path.segments[i].point.y);
           }
-          socket.send(path_list);
+          const packet = {
+            user_id : ID,
+            path_data: path_list.join(),
+            pen_color: color
+          }
+          socket.send(JSON.stringify(packet));
 
       }
+      
+      window.addEventListener('devicemotion', function(event)   {
+        if (Math.abs(event.acceleration.x) > 15 || Math.abs(event.acceleration.y) > 15){
+            paper.project.clear();
+        }
+      });
+      var gamma = 0;
+      window.addEventListener('deviceorientation', function(event) {
+        if (Math.abs(event.gamma - gamma) > 3 ) {
+          gamma = event.gamma;
+          color = getRandomColor();
+        }
+      });
+      
+      function reset() {
+        const context = canvas.getContext('2d');
+          context.clearRect(0, 0, canvas.width, canvas.height);
+      }
     }
+    //random color generator
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
     
     // getting the URL (you may want to use for Exercise 3)
     var url = window.location.href;
@@ -62,23 +103,26 @@
          'wss://p3-websockets-gzhou2142-garyzhou347810.codeanyapp.com/ws/draw');
   
     socket.onmessage = function(receivedMessage) {
-      var pathList = receivedMessage.data.split(",");
-      var p = new paper.Path();
-      p.strokeColor = 'black';
-      var i;
-      for (i = 0; i < pathList.length-1; i+=2) {
-        var x = parseInt(pathList[i], 10);
-        var y = parseInt(pathList[i+1], 10);
-        var point = new paper.Point(x,y);
-        p.add(point);
+      
+      if (url.indexOf("?size=large") > -1) {
+        var packetString = JSON.parse(receivedMessage.data);
+        var pathList = packetString.path_data.split(",");
+        var p = new paper.Path();
+
+        p.strokeColor = packetString.pen_color;
+        p.strokeWidth = 5;
+        var i;
+        for (i = 0; i < pathList.length-1; i+=2) {
+          var x = parseInt(pathList[i], 10);
+          var y = parseInt(pathList[i+1], 10);
+          var point = new paper.Point(x,y);
+          p.add(point);
+        }
+      } else {
+        return;
       }
-//       var myPath = new paper.Path();
-//       myPath.strokeColor = 'black';
-//       var i;
-//       for (i = 0; i < receivedMessage.length ; i++) {
-//         myPath.add(segments[i].point);
-//         console.log(segments[i].point);
-//       }
+      
+
       
     }
 

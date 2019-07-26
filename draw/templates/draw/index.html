@@ -9,127 +9,278 @@
     <link rel="stylesheet" type="text/css" href="{% static 'draw/vendor/bootstrap/css/bootstrap.min.css' %}">
     <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <style type="text/css">
-    </style>
+
+<style type="text/css">
+  .background {
+    font-family: sans-serif;
+    width: 100vw;
+    height: 90vh;
+    background-color: #DDDDDD;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content:center;
+    padding-top: 2vh;
+    overflow: scroll;
+    padding-top: 0;
+  }
+   .menu-buttons {
+    background-color: #344955;
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 30px;
+    justify-content:space-evenly;
+    position: absolute;
+    bottom: 0;
+  }
+  #popup {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    height: 90vh;
+    width: 100vw;
+    background-color: lightblue;
+    display:none;
+  }
+  .plans {
+    background-color : white;
+    width : 90vw;
+    height: 20vh;
+    border-radius: 50px;
+    margin-top: 2.5vh;
+    box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.3);
+    
+    
+  }
+  .top {
+    position: relative;
+    width: 50%;
+    height: 75%;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    background-color: white;
+    float: left;
+  }
+  .bottom {
+    font-size: 60px;
+    font-family: Arial, Times, serif;
+    font-weight: bold;
+    padding-left: 30px;
+    padding-top: 10px;
+  }
+  .info {
+    position: relative;
+    width: 50%;
+    height: 75%;
+    float: left;
+    border-bottom: solid;
+  }
+  
+  .post {
+    background-color: #344955;
+    position: absolute;
+    bottom: 30px;
+    width: 80vw;
+    height: 150px;
+    
+  }
+ 
+  .top>img {
+    position:relative;
+    background-color : #4a6572;
+    border-top-left-radius: 50px;
+    width: 100%;
+    object-fit:cover;
+    object-position: 50% 20%;
+    height:100%;
+  }
+  
+  .button {
+    height: 150px;
+    width: 250px;
+    border-radius: 35px;
+    background-color: #F9AA33;
+  }
+  form {
+    position: absolute;
+    top: 150px;
+    left: 10%;
+  }
+  input[type=text] {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-size: 40px;
+    width: 80vw;
+    padding: 18px 25px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    outline: none;
+    border-radius: 15px;
+    
+  }
+  select {
+    width: 80vw;
+    padding: 18px 25px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+     -webkit-transition: 0.2s;
+    transition: 0.2s;
+    border-radius: 15px;
+    font-size: 50px;
+    
+  }
+
+  label {
+    width: 100%;
+    font-size: 50px;
+  }
+
+  input[type=text]:focus {
+    border: 3px solid #555;
+  }
+  #save {
+    display: none;
+    background-color: #3EE13E;
+  }
+  #discard {
+    display: none;
+    background-color: #E13E3E;
+  }
+
+  
+  
+</style>
 
 </head>
 <body>
-<!--     <div id = "log">
-      <h1>
-        
-       hi
-      </h1>
-  </div> -->
-    <!-- You may change the dimensions of this canvas -->
-   <canvas id="myCanvas" width="1366px" height="1024px"></canvas>
+  <div class = "background">
+    <div class = "plans">
+      <div class = "top">
+         <img src= "https://www.signify.com/b-dam/signify/en-aa/about/news/2019/20190321-signify-illuminates-shanghai-bund-with-tunable-white-led-to-show-historic-buildings-in-the-best-light/Shanghai_Bund_tunable_white_1Mb_photo-landscape.jpg" alt = "The Bund">
+        </div>
+      <div class = "info"> </div>
+      <div class = "bottom">
+        Shanghai Experience
+      </div>
+    </div>
+    <div class = "plans">
+      <div class = "top">
+         <img src= "https://media.cntraveler.com/photos/5a8f3b070e2cf839e9dbfa1d/master/w_1200,c_limit/NYC_GettyImages-640006562.jpg" alt = "The Bund">
+        </div>
+      <div class = "info"> </div>
+
+      <div class = "bottom">
+        New York Adventures
+      </div>
+    </div>
+    
+    <div class = "plans">
+      <div class = "top">
+         <img src= "https://img.travel.rakuten.co.jp/mytrip/content/trend/hanami-tokyo/images/key.jpg" alt = "The Bund">
+        </div>
+      <div class = "info"> </div>
+
+      <div class = "bottom">
+        Tokyo Blossoms
+      </div>
+    </div>
+
+  <div class = "menu-buttons">
+<!--     <div class = "post">Post </div> -->
+    <div class = "button" id = "discard"></div>
+    <div class = "button" id = "post"></div>
+    <div class = "button" id = "save">
+    </div>
+  </div>
+<div id="popup">
+  <form id = "user-form">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" value="">
+    <label for="event">Event</label>
+    <input type="text" id="event" name="event" value="">
+    <label for="stime">Start Time</label>
+    <input type="text" id="stime" name="stime" value="">
+    <label for="etime">End Time</label>
+    <input type="text" id="etime" name="etime" value="">
+    <label for="city">City</label>
+      <select id="city" name="city">
+        <option value="Berkeley">Berkeley</option>
+        <option value="San Francisco">San Francisco</option>
+        <option value="Oakland">Oakland</option>
+      </select>
+  </form>
+</div>
 </body>
 <script type="text/javascript">
+  window.onload = function (){
+    var clicked = false;
+    $("#post").click(function() {
+      $("#popup").fadeToggle();
+      $("#post").fadeTo("fast", 0);
+      $("#save").fadeTo("fast", 1);
+      $("#discard").fadeTo("fast", 1);
+     });
     
-    // setting up the canvas and one paper tool
-    window.onload = function() {
-      var ID = Math.floor(Math.random() * 10000000000);
-      var color = getRandomColor();
-      var canvas = document.getElementById('myCanvas');
-      paper.setup(canvas);
-      var tool = new paper.Tool();
-      var path;
+    $("#save").click(function() {
+      var name = document.getElementById("name").value;
+      var event = document.getElementById("event").value;
+      var stime = document.getElementById("stime").value;
+      var etime = document.getElementById("etime").value;
+      var city = document.getElementById("city").value;
+      const packet = {
+        _name : name,
+        _event : event,
+        _stime : stime,
+        _etime : etime,
+        _city : city
+      }
+      socket.send(JSON.stringify(packet));
 
-      // Only execute onMouseDrag when the mouse
-      // has moved at least 10 points:
-      tool.minDistance = 10;
-
-      tool.onMouseDown = function(event) {
-          // Create a new path every time the mouse is clicked
-          path = new paper.Path();
-          path.add(event.point);
-          path.strokeColor = color;
-          path.strokeWidth = 5;
-      }
-
-      tool.onMouseDrag = function(event) {
-          // Add a point to the path every time the mouse is dragged
-          path.add(event.point);
-      }
-      tool.onMouseUp = function(event) {
-          path.add(event.point);
-          var path_list = [];
-          var i;
-          for (i = 0; i < path.segments.length; i++) {
-            path_list.push(path.segments[i].point.x);
-            path_list.push(path.segments[i].point.y);
-          }
-          const packet = {
-            user_id : ID,
-            path_data: path_list.join(),
-            pen_color: color
-          }
-          socket.send(JSON.stringify(packet));
-
-      }
-      
-      window.addEventListener('devicemotion', function(event)   {
-        if (Math.abs(event.acceleration.x) > 15 || Math.abs(event.acceleration.y) > 15){
-            paper.project.clear();
-        }
-      });
-      var gamma = 0;
-      window.addEventListener('deviceorientation', function(event) {
-        if (Math.abs(event.gamma - gamma) > 3 ) {
-          gamma = event.gamma;
-          color = getRandomColor();
-        }
-      });
-      
-      function reset() {
-        const context = canvas.getContext('2d');
-          context.clearRect(0, 0, canvas.width, canvas.height);
-      }
-    }
-    //random color generator
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-      }
+      console.log(city);
+      $("#popup").fadeToggle();
+      $("#popup").css("display","none");
+      $("#post").fadeTo("fast", 1);
+      $("#save").fadeTo("fast", 0);
+      $("#discard").fadeTo("fast", 0);
+    });
+    $("#discard").click(function() {
+      $("#popup").fadeToggle();
+      $("#popup").css("display","none");
+      $("#post").fadeTo("fast", 1);
+      $("#save").fadeTo("fast", 0);
+      $("#discard").fadeTo("fast", 0);
+    });
     
-    // getting the URL (you may want to use for Exercise 3)
+    $(".plans").click(function() {
+    });
+    
+   
+    
     var url = window.location.href;
-
     var socket = new WebSocket(
          'wss://p3-websockets-gzhou2142-garyzhou347810.codeanyapp.com/ws/draw');
-  
-    socket.onmessage = function(receivedMessage) {
-      
-      if (url.indexOf("?size=large") > -1) {
-        var packetString = JSON.parse(receivedMessage.data);
-        var pathList = packetString.path_data.split(",");
-        var p = new paper.Path();
-
-        p.strokeColor = packetString.pen_color;
-        p.strokeWidth = 5;
-        var i;
-        for (i = 0; i < pathList.length-1; i+=2) {
-          var x = parseInt(pathList[i], 10);
-          var y = parseInt(pathList[i+1], 10);
-          var point = new paper.Point(x,y);
-          p.add(point);
-        }
-      } else {
-        return;
-      }
-      
-
-      
+    
+    socket.onmessage = function (receivedData) {
+      var data = JSON.parse(receivedData.data);
+      console.log("socket message received");
+      console.log(data);
     }
-
+    
     socket.onclose = function(e) {
-      console.error('Chat socket closed unexpectedly');
+      console.log('Socket Closed Unexpectedly');
     }
-
-
+  }
+  
+  
 </script>
 </html>

@@ -40,6 +40,7 @@
   }
   #popup {
     position: absolute;
+    top: 0;
     display: flex;
     justify-content: center;
     height: 90vh;
@@ -65,13 +66,18 @@
     border-top-right-radius: 50px;
     background-color: white;
     float: left;
+    border-bottom: solid;
+    
   }
   .bottom {
     font-size: 60px;
     font-family: Arial, Times, serif;
     font-weight: bold;
-    padding-left: 30px;
-    padding-top: 10px;
+    height: 25%;
+    position: relative;
+    bottom:0px;
+    padding-left: 40px;
+    padding-top: 15.4vh;
   }
   .info {
     position: relative;
@@ -79,6 +85,16 @@
     height: 75%;
     float: left;
     border-bottom: solid;
+    font-size: 45px;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-evenly;
+    padding-left: 50px;
+    border-left: solid;
+  }
+  
+  .host {
+    font-size: 25px;
   }
   
   .post {
@@ -149,14 +165,46 @@
     border: 3px solid #555;
   }
   #save {
+    padding-top: 10px;
     display: none;
     background-color: #3EE13E;
   }
   #discard {
+            padding-top: 20px;
+
     display: none;
     background-color: #E13E3E;
   }
+  #clear {
+        padding-top: 20px;
 
+    display: none;
+    background-color: yellow;
+  }
+
+  #checkicon {
+    width: 140px;
+    height: 140px;
+    display:block;
+    
+    margin:auto;
+  }
+  #refreshicon {
+    width: 120px;
+    height: 120px;
+    display:block;
+    
+    margin:auto;
+  }
+  #discardicon {
+    width: 120px;
+    height: 120px;
+    display:block;
+    
+    margin:auto;
+  }
+  
+  
   
   
 </style>
@@ -164,13 +212,27 @@
 </head>
 <body>
   <div class = "background">
-    <div class = "plans">
+    <div class = "plans" id = "template">
       <div class = "top">
-         <img src= "https://www.signify.com/b-dam/signify/en-aa/about/news/2019/20190321-signify-illuminates-shanghai-bund-with-tunable-white-led-to-show-historic-buildings-in-the-best-light/Shanghai_Bund_tunable_white_1Mb_photo-landscape.jpg" alt = "The Bund">
+         <img id = "someimage" src= "https://bamlive.s3.amazonaws.com/BAMPFA-Addison-St_PhotoIwanBaan.jpg">
         </div>
-      <div class = "info"> </div>
+      <div class = "info"> 
+        <div class = "location">
+          Berkeley
+        </div>
+      <div class = "date">
+        2 pm - 5 pm
+        </div>
+        <div class = "group">
+          Group of 5
+        </div>
+        <div class = "host">
+          Host: John
+        </div>
+        
+      </div>
       <div class = "bottom">
-        Shanghai Experience
+        UC Berkeley Art Museum
       </div>
     </div>
     <div class = "plans">
@@ -194,16 +256,131 @@
         Tokyo Blossoms
       </div>
     </div>
+    </div>
 
   <div class = "menu-buttons">
 <!--     <div class = "post">Post </div> -->
-    <div class = "button" id = "discard"></div>
+    <div class = "button" id = "discard">
+    <svg id = "discardicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 298.667 298.667" style="enable-background:new 0 0 298.667 298.667;" xml:space="preserve">
+<g>
+	<g>
+		<polygon points="298.667,30.187 268.48,0 149.333,119.147 30.187,0 0,30.187 119.147,149.333 0,268.48 30.187,298.667     149.333,179.52 268.48,298.667 298.667,268.48 179.52,149.333   "/>
+	</g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+    </div>
     <div class = "button" id = "post"></div>
     <div class = "button" id = "save">
+      <svg id = "checkicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 375.147 375.147" style="enable-background:new 0 0 375.147 375.147;" xml:space="preserve">
+<g>
+	<g>
+		<polygon points="344.96,44.48 119.147,270.293 30.187,181.333 0,211.52 119.147,330.667 375.147,74.667   "/>
+	</g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
     </div>
+    <div class = "button" id = "clear">
+    <svg id = "refreshicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 341.333 341.333" style="enable-background:new 0 0 341.333 341.333;" xml:space="preserve">
+<g>
+	<g>
+		<path d="M341.227,149.333V0l-50.133,50.133C260.267,19.2,217.707,0,170.56,0C76.267,0,0.107,76.373,0.107,170.667    s76.16,170.667,170.453,170.667c79.467,0,146.027-54.4,164.907-128h-44.373c-17.6,49.707-64.747,85.333-120.533,85.333    c-70.72,0-128-57.28-128-128s57.28-128,128-128c35.307,0,66.987,14.72,90.133,37.867l-68.8,68.8H341.227z"/>
+	</g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg></div>
   </div>
 <div id="popup">
-  <form id = "user-form">
+  <form autocomplete="off" id = "user-form">
     <label for="name">Name</label>
     <input type="text" id="name" name="name" value="">
     <label for="event">Event</label>
@@ -218,6 +395,10 @@
         <option value="San Francisco">San Francisco</option>
         <option value="Oakland">Oakland</option>
       </select>
+    <label for="size">Group Size</label>
+    <input type="text" id="size" name="size" value="">
+    <label for="webimage">Image URL</label>
+    <input type="text" id="webimage" name="webimage" value="">
   </form>
 </div>
 </body>
@@ -227,8 +408,10 @@
     $("#post").click(function() {
       $("#popup").fadeToggle();
       $("#post").fadeTo("fast", 0);
+      $("#post").css("display","none");
       $("#save").fadeTo("fast", 1);
       $("#discard").fadeTo("fast", 1);
+      $("#clear").fadeTo("fast", 1);
      });
     
     $("#save").click(function() {
@@ -237,21 +420,27 @@
       var stime = document.getElementById("stime").value;
       var etime = document.getElementById("etime").value;
       var city = document.getElementById("city").value;
+      var size = document.getElementById("size").value;
+      var webimage = document.getElementById("webimage").value;
       const packet = {
         _name : name,
         _event : event,
         _stime : stime,
         _etime : etime,
-        _city : city
+        _city : city,
+        _size : size,
+        _webimage : webimage
       }
       socket.send(JSON.stringify(packet));
-
-      console.log(city);
       $("#popup").fadeToggle();
       $("#popup").css("display","none");
       $("#post").fadeTo("fast", 1);
       $("#save").fadeTo("fast", 0);
       $("#discard").fadeTo("fast", 0);
+      $("#clear").fadeTo("fast",0);
+      $("#clear").css("display","none");
+      $("#discard").css("display","none");
+      $("#save").css("display","none");
     });
     $("#discard").click(function() {
       $("#popup").fadeToggle();
@@ -259,6 +448,10 @@
       $("#post").fadeTo("fast", 1);
       $("#save").fadeTo("fast", 0);
       $("#discard").fadeTo("fast", 0);
+      $("#clear").fadeTo("fast",0);
+      $("#clear").css("display","none");
+      $("#discard").css("display","none");
+      $("#save").css("display","none");
     });
     
     $(".plans").click(function() {
@@ -266,14 +459,26 @@
     
    
     
-    var url = window.location.href;
+    var window_url = window.location.href;
     var socket = new WebSocket(
          'wss://p3-websockets-gzhou2142-garyzhou347810.codeanyapp.com/ws/draw');
     
     socket.onmessage = function (receivedData) {
       var data = JSON.parse(receivedData.data);
+      var newRequest = $("#template").clone();
+      var city = data._city;
+      newRequest.children(".info").children(".location")[0].innerText = city;
+      newRequest.children(".info").children(".date")[0].innerText = data._stime + " - " + data._etime;
+      newRequest.children(".info").children(".group")[0].innerText = "Group of " + data._size;
+      newRequest.children(".bottom")[0].innerText = data._event;
+      var url1 = data._webimage;
+      if (url1 == "") {
+        url1 = "https://www.digitalcitizen.life/sites/default/files/styles/img_u_large/public/featured/2016-08/photo_gallery.jpg";
+      }
+      newRequest.children(".top").children("#someimage").attr("src", url1);
+      newRequest.children(".info").children(".host")[0].innerText = "Host: " + data._name;
       console.log("socket message received");
-      console.log(data);
+      $(".background").prepend(newRequest);
     }
     
     socket.onclose = function(e) {

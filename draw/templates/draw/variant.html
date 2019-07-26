@@ -215,6 +215,14 @@
           display:block;
           margin: auto;
         }
+        .testdiv {
+          width: 100vw;
+          height: 100vh;
+          background-color: blue;
+          position: absolute;
+          top: 0;
+          display:none;
+        }
       </style>
    </head>
    <body>
@@ -472,7 +480,21 @@
           $("#save").css("display","none");
         });
         
+        // Show detailed view when clicked
         $(".plans").click(function() {
+          console.log("clicked");
+          var imageLink = $(".plans").children(".top")[0].getElementsByTagName('img')[0].src;
+          var cityName = $(".plans").children(".info").children(".location")[0].innerText;
+          var time = $(".plans").children(".info").children(".date")[0].innerText;
+          var host = $(".plans").children(".info").children(".host")[0].innerText;
+          var event = $(".plans").children(".bottom")[0].innerText;
+          $(".testdiv").fadeTo("fast", 1);
+          
+        });
+        //hide test div
+        $(".testdiv").click(function() {
+          $(".testdiv").fadeTo("fast",0);
+          $(".testdiv").css("display","none");
         });
         
         $("#clear").click(function() {

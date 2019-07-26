@@ -213,22 +213,19 @@
           display:block;
           margin: auto;
         }
-        
-        #bamfa {
+        .testdiv {
+          width: 100vw;
+          height: 100vh;
+          background-color: blue;
           position: absolute;
           top: 0;
-          display: flex;
-          justify-content: center;
-          height: 90vh;
-          width: 100vw;
-          background-color: whitesmoke;
-          display: none;
+          display:none;
         }
       </style>
    </head>
    <body>
       <div class = "background">
-         <div class = "plans bamfaplan" id = "template">
+         <div class = "plans" id = "template">
             <div class = "top">
                <img id = "someimage" src= "https://bamlive.s3.amazonaws.com/BAMPFA-Addison-St_PhotoIwanBaan.jpg">
             </div>
@@ -426,10 +423,9 @@
             <label for="webimage">Image URL</label>
             <input type="text" id="webimage" name="webimage" value="">
          </form>
+       
       </div>
-      <div id="bamfa">
-         <h3>UC Berkeley Art Museum</h3>
-      </div>
+      <div class = "testdiv"> </div>
    </body>
    <script type="text/javascript">
       window.onload = function (){
@@ -484,8 +480,23 @@
           $("#save").css("display","none");
         });
         
+        
+        // Show detailed view when clicked
         $(".plans").click(function() {
+          var imageLink = $(".plans").children(".top")[0].getElementsByTagName('img')[0].src;
+          var cityName = $(".plans").children(".info").children(".location")[0].innerText;
+          var time = $(".plans").children(".info").children(".date")[0].innerText;
+          var host = $(".plans").children(".info").children(".host")[0].innerText;
+          var event = $(".plans").children(".bottom")[0].innerText;
+          $(".testdiv").fadeTo("fast", 1);
+          
         });
+        //hide test div
+        $(".testdiv").click(function() {
+          $(".testdiv").fadeTo("fast",0);
+          $(".testdiv").css("display","none");
+        });
+        
         
         $("#clear").click(function() {
           document.getElementById("user-form").reset();
@@ -517,10 +528,6 @@
         socket.onclose = function(e) {
           console.log('Socket Closed Unexpectedly');
         }
-        
-        $(".bamfaplan").click(function() {
-            $("bamfa").fadeToggle();
-        });
       }
       
       

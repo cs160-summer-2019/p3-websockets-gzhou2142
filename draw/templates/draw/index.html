@@ -1,491 +1,510 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>P4 Drawing</title>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title>P4 Drawing</title>
+      <link rel="stylesheet" type="text/css" href="{% static 'draw/vendor/bootstrap/css/bootstrap.min.css' %}">
+      <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <style type="text/css">
+         .background {
+           font-family: sans-serif;
+           width: 100vw;
+           height: 90vh;
+           background-color: #DDDDDD;
+           display: flex;
+           flex-direction: row;
+           flex-wrap: wrap;
+           align-content: flex-start;
+           justify-content: center;
+           padding-top: 2vh;
+           overflow: scroll;
+           padding-top: 0;
+         }
 
-    <link rel="stylesheet" type="text/css" href="{% static 'draw/vendor/bootstrap/css/bootstrap.min.css' %}">
-    <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+         .menu-buttons {
+           background-color: #344955;
+           width: 100%;
+           height: 10vh;
+           display: flex;
+           flex-wrap: wrap;
+           padding-top: 30px;
+           justify-content: space-evenly;
+           position: absolute;
+           bottom: 0;
+         }
 
+         #popup {
+           position: absolute;
+           top: 0;
+           display: flex;
+           justify-content: center;
+           height: 90vh;
+           width: 100vw;
+           background-color: lightblue;
+           display: none;
+         }
 
-<style type="text/css">
-  .background {
-    font-family: sans-serif;
-    width: 100vw;
-    height: 90vh;
-    background-color: #DDDDDD;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    justify-content:center;
-    padding-top: 2vh;
-    overflow: scroll;
-    padding-top: 0;
-  }
-   .menu-buttons {
-    background-color: #344955;
-    width: 100%;
-    height: 10vh;
-    display: flex;
-    flex-wrap: wrap;
-    padding-top: 30px;
-    justify-content:space-evenly;
-    position: absolute;
-    bottom: 0;
-  }
-  #popup {
-    position: absolute;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    height: 90vh;
-    width: 100vw;
-    background-color: lightblue;
-    display:none;
-  }
-  .plans {
-    background-color : white;
-    width : 90vw;
-    height: 20vh;
-    border-radius: 50px;
-    margin-top: 2.5vh;
-    box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.3);
-    
-    
-  }
-  .top {
-    position: relative;
-    width: 50%;
-    height: 75%;
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-    background-color: white;
-    float: left;
-    border-bottom: solid;
-    
-  }
-  .bottom {
-    font-size: 60px;
-    font-family: Arial, Times, serif;
-    font-weight: bold;
-    height: 25%;
-    position: relative;
-    bottom:0px;
-    padding-left: 40px;
-    padding-top: 15.4vh;
-  }
-  .info {
-    position: relative;
-    width: 50%;
-    height: 75%;
-    float: left;
-    border-bottom: solid;
-    font-size: 45px;
-    display:flex;
-    flex-direction:column;
-    justify-content: space-evenly;
-    padding-left: 50px;
-    border-left: solid;
-  }
-  
-  .host {
-    font-size: 25px;
-  }
-  
-  .post {
-    background-color: #344955;
-    position: absolute;
-    bottom: 30px;
-    width: 80vw;
-    height: 150px;
-    
-  }
- 
-  .top>img {
-    position:relative;
-    background-color : #4a6572;
-    border-top-left-radius: 50px;
-    width: 100%;
-    object-fit:cover;
-    object-position: 50% 20%;
-    height:100%;
-  }
-  
-  .button {
-    height: 150px;
-    width: 250px;
-    border-radius: 35px;
-    background-color: #F9AA33;
-  }
-  form {
-    position: absolute;
-    top: 150px;
-    left: 10%;
-  }
-  input[type=text] {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    font-size: 40px;
-    width: 80vw;
-    padding: 18px 25px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 3px solid #ccc;
-    -webkit-transition: 0.2s;
-    transition: 0.2s;
-    outline: none;
-    border-radius: 15px;
-    
-  }
-  select {
-    width: 80vw;
-    padding: 18px 25px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 3px solid #ccc;
-     -webkit-transition: 0.2s;
-    transition: 0.2s;
-    border-radius: 15px;
-    font-size: 50px;
-    
-  }
+         .plans {
+           background-color: white;
+           width: 90vw;
+           height: 20vh;
+           border-radius: 50px;
+           margin-top: 2.5vh;
+           box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.3);
+         }
 
-  label {
-    width: 100%;
-    font-size: 50px;
-  }
+         .top {
+           position: relative;
+           width: 50%;
+           height: 75%;
+           border-top-left-radius: 50px;
+           border-top-right-radius: 50px;
+           background-color: white;
+           float: left;
+           border-bottom: solid;
+         }
 
-  input[type=text]:focus {
-    border: 3px solid #555;
-  }
-  #save {
-    padding-top: 10px;
-    display: none;
-    background-color: #3EE13E;
-  }
-  #discard {
-            padding-top: 20px;
+         .bottom {
+           font-size: 60px;
+           font-family: Arial, Times, serif;
+           font-weight: bold;
+           height: 25%;
+           position: relative;
+           bottom: 0px;
+           padding-left: 40px;
+           padding-top: 15.4vh;
+         }
 
-    display: none;
-    background-color: #E13E3E;
-  }
-  #clear {
-        padding-top: 20px;
+         .info {
+           position: relative;
+           width: 50%;
+           height: 75%;
+           float: left;
+           border-bottom: solid;
+           font-size: 45px;
+           display: flex;
+           flex-direction: column;
+           justify-content: space-evenly;
+           padding-left: 50px;
+           border-left: solid;
+         }
 
-    display: none;
-    background-color: yellow;
-  }
+         .host {
+           font-size: 25px;
+         }
 
-  #checkicon {
-    width: 140px;
-    height: 140px;
-    display:block;
-    
-    margin:auto;
-  }
-  #refreshicon {
-    width: 120px;
-    height: 120px;
-    display:block;
-    
-    margin:auto;
-  }
-  #discardicon {
-    width: 120px;
-    height: 120px;
-    display:block;
-    
-    margin:auto;
-  }
-  
-  
-  
-  
-</style>
+         .post {
+           background-color: #344955;
+           position: absolute;
+           bottom: 30px;
+           width: 80vw;
+           height: 150px;
+         }
 
-</head>
-<body>
-  <div class = "background">
-    <div class = "plans" id = "template">
-      <div class = "top">
-         <img id = "someimage" src= "https://bamlive.s3.amazonaws.com/BAMPFA-Addison-St_PhotoIwanBaan.jpg">
-        </div>
-      <div class = "info"> 
-        <div class = "location">
-          Berkeley
-        </div>
-      <div class = "date">
-        2 pm - 5 pm
-        </div>
-        <div class = "group">
-          Group of 5
-        </div>
-        <div class = "host">
-          Host: John
-        </div>
+         .top>img {
+           position: relative;
+           background-color: #4a6572;
+           border-top-left-radius: 50px;
+           width: 100%;
+           object-fit: cover;
+           object-position: 50% 20%;
+           height: 100%;
+         }
+
+         .button {
+           height: 150px;
+           width: 250px;
+           border-radius: 35px;
+           background-color: #F9AA33;
+         }
+
+         form {
+           position: absolute;
+           top: 150px;
+           left: 10%;
+         }
+
+         input[type=text] {
+           display: flex;
+           flex-direction: row;
+           justify-content: space-evenly;
+           font-size: 40px;
+           width: 80vw;
+           padding: 18px 25px;
+           margin: 8px 0;
+           box-sizing: border-box;
+           border: 3px solid #ccc;
+           -webkit-transition: 0.2s;
+           transition: 0.2s;
+           outline: none;
+           border-radius: 15px;
+         }
+
+         select {
+           width: 80vw;
+           padding: 18px 25px;
+           margin: 8px 0;
+           box-sizing: border-box;
+           border: 3px solid #ccc;
+           -webkit-transition: 0.2s;
+           transition: 0.2s;
+           border-radius: 15px;
+           font-size: 50px;
+         }
+
+         label {
+           width: 100%;
+           font-size: 50px;
+         }
+
+         input[type=text]:focus {
+           border: 3px solid #555;
+         }
+
+         #save {
+           padding-top: 10px;
+           display: none;
+           background-color: #3EE13E;
+         }
+
+         #discard {
+           padding-top: 20px;
+           display: none;
+           background-color: #E13E3E;
+         }
+
+         #clear {
+           padding-top: 20px;
+           display: none;
+           background-color: yellow;
+         }
         
+          #post {
+            padding-top: 15px;
+          }
+
+         #checkicon {
+           width: 140px;
+           height: 140px;
+           display: block;
+           margin: auto;
+         }
+
+         #refreshicon {
+           width: 120px;
+           height: 120px;
+           display: block;
+           margin: auto;
+         }
+
+         #discardicon {
+           width: 110px;
+           height: 110px;
+           display: block;
+           margin: auto;
+         }
+        
+        #posticon {
+          width: 120px;
+          height: 120px;
+          display:block;
+          margin: auto;
+        }
+      </style>
+   </head>
+   <body>
+      <div class = "background">
+         <div class = "plans" id = "template">
+            <div class = "top">
+               <img id = "someimage" src= "https://bamlive.s3.amazonaws.com/BAMPFA-Addison-St_PhotoIwanBaan.jpg">
+            </div>
+            <div class = "info">
+               <div class = "location">
+                  Berkeley
+               </div>
+               <div class = "date">
+                  2 pm - 5 pm
+               </div>
+               <div class = "group">
+                  Group of 5
+               </div>
+               <div class = "host">
+                  Host: Alfa
+               </div>
+            </div>
+            <div class = "bottom">
+               UC Berkeley Art Museum
+            </div>
+         </div>
+         <div class = "plans">
+            <div class = "top">
+               <img src= "https://cdn.vox-cdn.com/thumbor/p4mSCoRVwYnjNhdnFFM829EVubg=/0x0:4250x2833/1200x800/filters:focal(1977x870:2657x1550)/cdn.vox-cdn.com/uploads/chorus_image/image/54936727/shutterstock_529749235.0.jpg">
+            </div>
+            <div class = "info">
+               <div class = "location">
+                  San Francisco
+               </div>
+               <div class = "date">
+                  7 am - 10 am
+               </div>
+               <div class = "group">
+                  Group of 10
+               </div>
+               <div class = "host">
+                  Host: Bravo
+               </div>
+            </div>
+            <div class = "bottom">
+               Golden Gate Bridge
+            </div>
+         </div>
+         <div class = "plans">
+            <div class = "top">
+               <img src= "https://dx6iy6yk2x0g.cloudfront.net/images/b6c/709/b6c709f11d4f45e701b2319d474d79970cb38c2a-640x360.jpg?compressionQuality=80&id=5175bec06747df5077000005&op=cropThumbnail&version=1">
+            </div>
+            <div class = "info">
+               <div class = "location">
+                  Berkeley
+               </div>
+               <div class = "date">
+                  8 am - 11 am
+               </div>
+               <div class = "group">
+                  Group of 15
+               </div>
+               <div class = "host">
+                  Host: Charlie
+               </div>
+            </div>
+            <div class = "bottom">
+               Sather Gate
+            </div>
+         </div>
       </div>
-      <div class = "bottom">
-        UC Berkeley Art Museum
-      </div>
-    </div>
-    <div class = "plans">
-      <div class = "top">
-         <img src= "https://media.cntraveler.com/photos/5a8f3b070e2cf839e9dbfa1d/master/w_1200,c_limit/NYC_GettyImages-640006562.jpg" alt = "The Bund">
+      <div class = "menu-buttons">
+         <!--     <div class = "post">Post </div> -->
+         <div class = "button" id = "discard">
+            <svg id = "discardicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 298.667 298.667" style="enable-background:new 0 0 298.667 298.667;" xml:space="preserve">
+               <g>
+                  <g>
+                     <polygon points="298.667,30.187 268.48,0 149.333,119.147 30.187,0 0,30.187 119.147,149.333 0,268.48 30.187,298.667     149.333,179.52 268.48,298.667 298.667,268.48 179.52,149.333   "/>
+                  </g>
+               </g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+            </svg>
+         </div>
+         <div class = "button" id = "post">
+            <svg id = "posticon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 width="438.533px" height="438.533px" viewBox="0 0 438.533 438.533" style="enable-background:new 0 0 438.533 438.533;"
+                 xml:space="preserve">
+                 <g>
+                    <path d="M409.133,109.203c-19.608-33.592-46.205-60.189-79.798-79.796C295.736,9.801,259.058,0,219.273,0
+                       c-39.781,0-76.47,9.801-110.063,29.407c-33.595,19.604-60.192,46.201-79.8,79.796C9.801,142.8,0,179.489,0,219.267
+                       c0,39.78,9.804,76.463,29.407,110.062c19.607,33.592,46.204,60.189,79.799,79.798c33.597,19.605,70.283,29.407,110.063,29.407
+                       s76.47-9.802,110.065-29.407c33.593-19.602,60.189-46.206,79.795-79.798c19.603-33.596,29.403-70.284,29.403-110.062
+                       C438.533,179.485,428.732,142.795,409.133,109.203z M347.179,237.539c0,4.948-1.811,9.236-5.428,12.847
+                       c-3.62,3.614-7.901,5.428-12.847,5.428h-73.091v73.084c0,4.948-1.813,9.232-5.428,12.854c-3.613,3.613-7.897,5.421-12.847,5.421
+                       h-36.543c-4.948,0-9.231-1.808-12.847-5.421c-3.617-3.621-5.426-7.905-5.426-12.854v-73.084h-73.089
+                       c-4.948,0-9.229-1.813-12.847-5.428c-3.616-3.61-5.424-7.898-5.424-12.847v-36.547c0-4.948,1.809-9.231,5.424-12.847
+                       c3.617-3.617,7.898-5.426,12.847-5.426h73.092v-73.089c0-4.949,1.809-9.229,5.426-12.847c3.616-3.616,7.898-5.424,12.847-5.424
+                       h36.547c4.948,0,9.233,1.809,12.847,5.424c3.614,3.617,5.428,7.898,5.428,12.847v73.089h73.084c4.948,0,9.232,1.809,12.847,5.426
+                       c3.617,3.615,5.428,7.898,5.428,12.847V237.539z"/>
+                 </g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+                 <g></g>
+              </svg>
+        
         </div>
-      <div class = "info"> </div>
-
-      <div class = "bottom">
-        New York Adventures
+         <div class = "button" id = "save">
+            <svg id = "checkicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 375.147 375.147" style="enable-background:new 0 0 375.147 375.147;" xml:space="preserve">
+               <g>
+                  <g>
+                     <polygon points="344.96,44.48 119.147,270.293 30.187,181.333 0,211.52 119.147,330.667 375.147,74.667   "/>
+                  </g>
+               </g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+            </svg>
+         </div>
+         <div class = "button" id = "clear">
+            <svg id = "refreshicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 341.333 341.333" style="enable-background:new 0 0 341.333 341.333;" xml:space="preserve">
+               <g>
+                  <g>
+                     <path d="M341.227,149.333V0l-50.133,50.133C260.267,19.2,217.707,0,170.56,0C76.267,0,0.107,76.373,0.107,170.667    s76.16,170.667,170.453,170.667c79.467,0,146.027-54.4,164.907-128h-44.373c-17.6,49.707-64.747,85.333-120.533,85.333    c-70.72,0-128-57.28-128-128s57.28-128,128-128c35.307,0,66.987,14.72,90.133,37.867l-68.8,68.8H341.227z"/>
+                  </g>
+               </g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+               <g></g>
+            </svg>
+         </div>
       </div>
-    </div>
-    
-    <div class = "plans">
-      <div class = "top">
-         <img src= "https://img.travel.rakuten.co.jp/mytrip/content/trend/hanami-tokyo/images/key.jpg" alt = "The Bund">
-        </div>
-      <div class = "info"> </div>
-
-      <div class = "bottom">
-        Tokyo Blossoms
+      <div id="popup">
+         <form autocomplete="off" id = "user-form">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" value="">
+            <label for="event">Event</label>
+            <input type="text" id="event" name="event" value="">
+            <label for="stime">Start Time</label>
+            <input type="text" id="stime" name="stime" value="">
+            <label for="etime">End Time</label>
+            <input type="text" id="etime" name="etime" value="">
+            <label for="city">City</label>
+            <select id="city" name="city">
+               <option value="Berkeley">Berkeley</option>
+               <option value="San Francisco">San Francisco</option>
+               <option value="Oakland">Oakland</option>
+            </select>
+            <label for="size">Group Size</label>
+            <input type="text" id="size" name="size" value="">
+            <label for="webimage">Image URL</label>
+            <input type="text" id="webimage" name="webimage" value="">
+         </form>
       </div>
-    </div>
-    </div>
-
-  <div class = "menu-buttons">
-<!--     <div class = "post">Post </div> -->
-    <div class = "button" id = "discard">
-    <svg id = "discardicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 298.667 298.667" style="enable-background:new 0 0 298.667 298.667;" xml:space="preserve">
-<g>
-	<g>
-		<polygon points="298.667,30.187 268.48,0 149.333,119.147 30.187,0 0,30.187 119.147,149.333 0,268.48 30.187,298.667     149.333,179.52 268.48,298.667 298.667,268.48 179.52,149.333   "/>
-	</g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-</svg>
-    </div>
-    <div class = "button" id = "post"></div>
-    <div class = "button" id = "save">
-      <svg id = "checkicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 375.147 375.147" style="enable-background:new 0 0 375.147 375.147;" xml:space="preserve">
-<g>
-	<g>
-		<polygon points="344.96,44.48 119.147,270.293 30.187,181.333 0,211.52 119.147,330.667 375.147,74.667   "/>
-	</g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-</svg>
-
-    </div>
-    <div class = "button" id = "clear">
-    <svg id = "refreshicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 341.333 341.333" style="enable-background:new 0 0 341.333 341.333;" xml:space="preserve">
-<g>
-	<g>
-		<path d="M341.227,149.333V0l-50.133,50.133C260.267,19.2,217.707,0,170.56,0C76.267,0,0.107,76.373,0.107,170.667    s76.16,170.667,170.453,170.667c79.467,0,146.027-54.4,164.907-128h-44.373c-17.6,49.707-64.747,85.333-120.533,85.333    c-70.72,0-128-57.28-128-128s57.28-128,128-128c35.307,0,66.987,14.72,90.133,37.867l-68.8,68.8H341.227z"/>
-	</g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-</svg></div>
-  </div>
-<div id="popup">
-  <form autocomplete="off" id = "user-form">
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name" value="">
-    <label for="event">Event</label>
-    <input type="text" id="event" name="event" value="">
-    <label for="stime">Start Time</label>
-    <input type="text" id="stime" name="stime" value="">
-    <label for="etime">End Time</label>
-    <input type="text" id="etime" name="etime" value="">
-    <label for="city">City</label>
-      <select id="city" name="city">
-        <option value="Berkeley">Berkeley</option>
-        <option value="San Francisco">San Francisco</option>
-        <option value="Oakland">Oakland</option>
-      </select>
-    <label for="size">Group Size</label>
-    <input type="text" id="size" name="size" value="">
-    <label for="webimage">Image URL</label>
-    <input type="text" id="webimage" name="webimage" value="">
-  </form>
-</div>
-</body>
-<script type="text/javascript">
-  window.onload = function (){
-    var clicked = false;
-    $("#post").click(function() {
-      $("#popup").fadeToggle();
-      $("#post").fadeTo("fast", 0);
-      $("#post").css("display","none");
-      $("#save").fadeTo("fast", 1);
-      $("#discard").fadeTo("fast", 1);
-      $("#clear").fadeTo("fast", 1);
-     });
-    
-    $("#save").click(function() {
-      var name = document.getElementById("name").value;
-      var event = document.getElementById("event").value;
-      var stime = document.getElementById("stime").value;
-      var etime = document.getElementById("etime").value;
-      var city = document.getElementById("city").value;
-      var size = document.getElementById("size").value;
-      var webimage = document.getElementById("webimage").value;
-      const packet = {
-        _name : name,
-        _event : event,
-        _stime : stime,
-        _etime : etime,
-        _city : city,
-        _size : size,
-        _webimage : webimage
+   </body>
+   <script type="text/javascript">
+      window.onload = function (){
+        var clicked = false;
+        $("#post").click(function() {
+          document.getElementById("user-form").reset();
+          $("#popup").fadeToggle();
+          $("#post").fadeTo("fast", 0);
+          $("#post").css("display","none");
+          $("#save").fadeTo("fast", 1);
+          $("#discard").fadeTo("fast", 1);
+          $("#clear").fadeTo("fast", 1);
+         });
+        
+        $("#save").click(function() {
+          var name = document.getElementById("name").value;
+          var event = document.getElementById("event").value;
+          var stime = document.getElementById("stime").value;
+          var etime = document.getElementById("etime").value;
+          var city = document.getElementById("city").value;
+          var size = document.getElementById("size").value;
+          var webimage = document.getElementById("webimage").value;
+          const packet = {
+            _name : name,
+            _event : event,
+            _stime : stime,
+            _etime : etime,
+            _city : city,
+            _size : size,
+            _webimage : webimage
+          }
+          socket.send(JSON.stringify(packet));
+          $("#popup").fadeToggle();
+          $("#popup").css("display","none");
+          $("#post").fadeTo("fast", 1);
+          $("#save").fadeTo("fast", 0);
+          $("#discard").fadeTo("fast", 0);
+          $("#clear").fadeTo("fast",0);
+          $("#clear").css("display","none");
+          $("#discard").css("display","none");
+          $("#save").css("display","none");
+        });
+        $("#discard").click(function() {
+          $("#popup").fadeToggle();
+          $("#popup").css("display","none");
+          $("#post").fadeTo("fast", 1);
+          $("#save").fadeTo("fast", 0);
+          $("#discard").fadeTo("fast", 0);
+          $("#clear").fadeTo("fast",0);
+          $("#clear").css("display","none");
+          $("#discard").css("display","none");
+          $("#save").css("display","none");
+        });
+        
+        $(".plans").click(function() {
+        });
+        
+        $("#clear").click(function() {
+          document.getElementById("user-form").reset();
+        });
+       
+        
+        var window_url = window.location.href;
+        var socket = new WebSocket(
+             'wss://p3-websockets-gzhou2142-garyzhou347810.codeanyapp.com/ws/draw');
+        
+        socket.onmessage = function (receivedData) {
+          var data = JSON.parse(receivedData.data);
+          var newRequest = $("#template").clone();
+          var city = data._city;
+          newRequest.children(".info").children(".location")[0].innerText = city;
+          newRequest.children(".info").children(".date")[0].innerText = data._stime + " - " + data._etime;
+          newRequest.children(".info").children(".group")[0].innerText = "Group of " + data._size;
+          newRequest.children(".bottom")[0].innerText = data._event;
+          var url1 = data._webimage;
+          if (url1 == "") {
+            url1 = "https://www.digitalcitizen.life/sites/default/files/styles/img_u_large/public/featured/2016-08/photo_gallery.jpg";
+          }
+          newRequest.children(".top").children("#someimage").attr("src", url1);
+          newRequest.children(".info").children(".host")[0].innerText = "Host: " + data._name;
+          console.log("socket message received");
+          $(".background").prepend(newRequest);
+        }
+        
+        socket.onclose = function(e) {
+          console.log('Socket Closed Unexpectedly');
+        }
       }
-      socket.send(JSON.stringify(packet));
-      $("#popup").fadeToggle();
-      $("#popup").css("display","none");
-      $("#post").fadeTo("fast", 1);
-      $("#save").fadeTo("fast", 0);
-      $("#discard").fadeTo("fast", 0);
-      $("#clear").fadeTo("fast",0);
-      $("#clear").css("display","none");
-      $("#discard").css("display","none");
-      $("#save").css("display","none");
-    });
-    $("#discard").click(function() {
-      $("#popup").fadeToggle();
-      $("#popup").css("display","none");
-      $("#post").fadeTo("fast", 1);
-      $("#save").fadeTo("fast", 0);
-      $("#discard").fadeTo("fast", 0);
-      $("#clear").fadeTo("fast",0);
-      $("#clear").css("display","none");
-      $("#discard").css("display","none");
-      $("#save").css("display","none");
-    });
-    
-    $(".plans").click(function() {
-    });
-    
-   
-    
-    var window_url = window.location.href;
-    var socket = new WebSocket(
-         'wss://p3-websockets-gzhou2142-garyzhou347810.codeanyapp.com/ws/draw');
-    
-    socket.onmessage = function (receivedData) {
-      var data = JSON.parse(receivedData.data);
-      var newRequest = $("#template").clone();
-      var city = data._city;
-      newRequest.children(".info").children(".location")[0].innerText = city;
-      newRequest.children(".info").children(".date")[0].innerText = data._stime + " - " + data._etime;
-      newRequest.children(".info").children(".group")[0].innerText = "Group of " + data._size;
-      newRequest.children(".bottom")[0].innerText = data._event;
-      var url1 = data._webimage;
-      if (url1 == "") {
-        url1 = "https://www.digitalcitizen.life/sites/default/files/styles/img_u_large/public/featured/2016-08/photo_gallery.jpg";
-      }
-      newRequest.children(".top").children("#someimage").attr("src", url1);
-      newRequest.children(".info").children(".host")[0].innerText = "Host: " + data._name;
-      console.log("socket message received");
-      $(".background").prepend(newRequest);
-    }
-    
-    socket.onclose = function(e) {
-      console.log('Socket Closed Unexpectedly');
-    }
-  }
-  
-  
-</script>
+      
+      
+   </script>
 </html>
